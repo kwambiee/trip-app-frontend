@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchForm = ({ onSearch }) => {
   const [keyword, setKeyword] = useState("");
   const [includeCanceled, setIncludeCanceled] = useState(false);
   const [distance, setDistance] = useState("");
   const [time, setTime] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch({ keyword, includeCanceled, distance, time });
+     navigate("/results"); 
   };
 
   return (
