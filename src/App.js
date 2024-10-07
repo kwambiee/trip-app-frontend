@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import SearchForm from "./components/SearchForm";
+import TripResults from "./components/TripResults";
+import TripDetails from "./components/TripDetails";
+import { fetchTrips } from "./services/tripService";
 
-function App() {
+const App = () => {
+  const [trips, setTrips] = useState([]);
+
+  const handleSearch = async (searchParams) => {
+    try {
+      const tripData = await fetchTrips(searchParams);
+      setTrips(tripData);
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container mx-auto p-6">
+        <Switch>
+          <Route exact path="/">
+            <SearchForm onSearch={handleSearch} />
+            <TripResults trips={trips} />
+          </Route>
+          <Route path="/trips/:id">
+            <TripDetails />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
