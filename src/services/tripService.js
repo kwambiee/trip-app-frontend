@@ -11,3 +11,13 @@ export const fetchTrips = async (params) => {
     throw error;
   }
 };
+
+export const fetchTripById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trip details:", error);
+    throw error;
+  }
+};
