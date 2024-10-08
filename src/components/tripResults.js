@@ -1,9 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaStar, FaStarHalfAlt, FaRegStar, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; 
+import {
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaSpinner,
+} from "react-icons/fa"; 
 
-const TripResults = ({ trips }) => {
+const TripResults = ({ trips, loading }) => {
 
+  
     const renderStars = (rating) => {
       const stars = [];
       for (let i = 1; i <= 5; i++) {
@@ -20,58 +28,67 @@ const TripResults = ({ trips }) => {
 
     const renderStatusIcon = (status) => {
       if (status === "COMPLETED") {
-        return <FaCheckCircle className="text-green-500" size={24} />; // Green tick for completed
+        return <FaCheckCircle className="text-green-500" size={24} />; 
       } else if (status === "CANCELED") {
-        return <FaTimesCircle className="text-red-500" size={24} />; // Red cross for canceled
+        return <FaTimesCircle className="text-red-500" size={24} />; 
       }
       return null;
     };
   return (
-    <div className="mt-8">
-      <h2 className="text-xl font-bold">Search </h2>
+    <div className="pt-8">
+      <h2 className="text-xl font-bold">Search Results</h2>
+      {loading ? (
+        // Show loading icon or spinner when loading
+        <div className="flex justify-center items-center mt-4">
+          {/* Loading spinner */}
+          <FaSpinner className="animate-spin text-3xl text-indigo-500" />
+          <p className="ml-2 text-indigo-500">Loading trips...</p>
+        </div>
+      ) : (
+        <>
       <p className="text-sm text-gray-500">{trips.length} trip(s) found</p>
-      <div className="mt-4 space-y-4">
+      <div className="mx-auto w-1/2 mt-4 grid grid-cols-1 gap-6">
         {trips.map((trip) => (
           <div
             key={trip.id}
-            className="bg-white p-4 rounded-lg shadow-md space-y-2"
+            className="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between space-y-2"
           >
-            <p>
-              <strong>Trip Start Time:</strong>{" "}
-              {new Date(trip.pickup_date).toLocaleString()}
-            </p>
-            <p>
-              <strong>Trip Final Cost:</strong> {trip.cost} {trip.cost_unit}
-            </p>
-            <p>
-              <strong>Pickup Location:</strong> {trip.pickup_location}
-            </p>
-            <p>
-              <strong>Dropoff Location:</strong> {trip.dropoff_location}
-            </p>
-            {/* Rating */}
-            <div className="flex items-center space-x-2">
-              <p>
-                <strong>Driver Rating:</strong>
+            <div className="flex justify-between">
+              {/* Trip Start Time */}
+              <p className="text-gray-500">
+                Trip Date: {new Date(trip.pickup_date).toLocaleString()}
               </p>
-              <div className="flex items-center space-x-2">
-                <p>
-                  <strong>Driver Rating:</strong>
-                </p>
-                <div className="flex items-center">
-                  {renderStars(trip.driver_rating)}
-                </div>
+              {/* Trip Final Cost */}
+              <p className="font-semibold text-gray-800">
+                Trip Cost: {trip.cost} {trip.cost_unit}
+              </p>
+            </div>
+
+            {/* Pickup & Dropoff Locations */}
+            <div>
+              <p className="text-gray-700">
+                Pickup: <span className="text-green-500">●</span> {trip.pickup_location}
+              </p>
+              <p className="text-gray-700">
+                Dropoff: <span className="text-red-500">●</span> {trip.dropoff_location}
+              </p>
+            </div>
+
+            {/* Driver Rating */}
+            <div className="flex items-center space-x-2">
+              <p className="font-medium text-gray-700">Driver Rating:</p>
+              <div className="flex items-center">
+                {renderStars(trip.driver_rating)}
               </div>
             </div>
 
             {/* Trip Status */}
-            {/* Trip Status */}
-            <div className="flex items-center space-x-2">
-              <p>
-                <strong>Trip Status:</strong> {trip.status}
-              </p>
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-gray-700">{trip.status}</p>
               {renderStatusIcon(trip.status)}
             </div>
+
+            {/* View Details Link */}
             <Link
               to={`/trips/${trip.id}`}
               className="text-indigo-600 hover:underline"
@@ -81,6 +98,8 @@ const TripResults = ({ trips }) => {
           </div>
         ))}
       </div>
+      </>
+      )}
     </div>
   );
 };
