@@ -105,7 +105,7 @@ const TripDetails = () => {
           </div>
           {/* Car Info */}
           <div >
-            <h3 className="text-lg font-bold mb-2">Car Information</h3>
+            <h3 className="text-lg font-bold mb-2">Car Information </h3>
             <p>
               <strong>Car Make & Model:</strong> {trip.car_make}{" "}
               {trip.car_model}
