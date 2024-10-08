@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/trips";
+const API_URL = "https://trip-search-mu.vercel.app/api/trips";
 
 export const fetchTrips = async (params) => {
   try {

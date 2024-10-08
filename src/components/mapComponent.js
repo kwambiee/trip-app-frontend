@@ -1,5 +1,6 @@
 import React from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import {FaLocationPin} from "react-icons/fa";
 
 const MapComponent = ({ pickupCoords, dropoffCoords }) => {
   // Google Maps container style
@@ -15,14 +16,30 @@ const MapComponent = ({ pickupCoords, dropoffCoords }) => {
   };
 
   return (
-   
-      <GoogleMap mapContainerStyle={mapStyles} center={center} zoom={15}>
-        {/* Marker for Pickup Location */}
-        <Marker position={pickupCoords} label="Pickup" />
-        {/* Marker for Dropoff Location */}
-        <Marker position={dropoffCoords} label="Dropoff" />
-      </GoogleMap>
-    
+    <GoogleMap
+      mapContainerStyle={mapStyles}
+      center={center}
+      zoom={15}
+    >
+      {/* Marker for Pickup Location */}
+      <Marker
+        position={pickupCoords}
+        label="Pickup"
+        icon={{
+          url: "https://img.icons8.com/?size=100&id=7880&format=png&color=000000", 
+          scaledSize: new window.google.maps.Size(30, 30), 
+        }}
+      />
+      {/* Marker for Dropoff Location */}
+      <Marker
+        position={dropoffCoords}
+        label="Dropoff"
+        icon={{
+          url: "https://img.icons8.com/?size=100&id=7880&format=png&color=000000", 
+          scaledSize: new window.google.maps.Size(30, 30), 
+        }}
+      />
+    </GoogleMap>
   );
 };
 
