@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchTripById } from "../services/tripService";
 import {
-  FaCheckCircle,
-  FaTimesCircle,
   FaStar,
 } from "react-icons/fa";
+import { FaCircleArrowLeft } from "react-icons/fa6"; 
 import MapComponent from "./mapComponent";
 
 const TripDetails = () => {
   const { id } = useParams();
   const [trip, setTrip] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTrip = async () => {
@@ -42,15 +42,13 @@ const TripDetails = () => {
    return stars;
  };
 
-  const renderStatusIcon = (status) => {
-    if (status === "COMPLETED") {
-      return <FaCheckCircle className="text-green-500 text-2xl" />;
-    } else {
-      return <FaTimesCircle className="text-red-500 text-2xl" />;
-    }
-  };
-
   return (
+    <>
+    <div>
+      <button onClick={() => navigate(-1)} >
+        <FaCircleArrowLeft className="mr-2" size={30} />
+        </button>
+    </div>
     <div className="bg-white p-6 rounded-lg shadow-md mt-8 space-y-8">
       <div className="flex justify-between items-start space-x-4">
         {/* Trip Information */}
@@ -130,6 +128,7 @@ const TripDetails = () => {
         />
       </div>
     </div>
+    </>
   );
 
 };

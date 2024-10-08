@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaStar,
   FaStarHalfAlt,
@@ -7,9 +7,11 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaSpinner,
-} from "react-icons/fa"; 
+} from "react-icons/fa";
+import { FaCircleArrowLeft } from "react-icons/fa6"; 
 
 const TripResults = ({ trips, loading }) => {
+  const navigate = useNavigate();
 
   
     const renderStars = (rating) => {
@@ -34,24 +36,31 @@ const TripResults = ({ trips, loading }) => {
       }
       return null;
     };
+
   return (
-    <div className="pt-8">
-      <h2 className="text-xl font-bold">Search Results</h2>
+    <>
+    <div>
+      <button onClick={() => navigate(-1)} className="">
+        <FaCircleArrowLeft className="mr-2" size={30} />
+        </button>
+    </div>
+    <div className="">
+      <h2 className="text-xl font-bold text-center">Search Results</h2>
       {loading ? (
         // Show loading icon or spinner when loading
-        <div className="flex justify-center items-center mt-4">
+        <div className="flex justify-center items-center text-center  mt-4 ">
           {/* Loading spinner */}
-          <FaSpinner className="animate-spin text-3xl text-indigo-500" />
-          <p className="ml-2 text-indigo-500">Loading trips...</p>
+          <FaSpinner className="animate-spin text-3xl text-indigo-500" size={40}/>
+          <p className="ml-2 text-indigo-500 ">Loading trips...</p>
         </div>
       ) : (
         <>
-      <p className="text-sm text-gray-500">{trips.length} trip(s) found</p>
+      <p className="text-sm text-gray-500 text-center">{trips.length} trip(s) found</p>
       <div className="mx-auto w-1/2 mt-4 grid grid-cols-1 gap-6">
         {trips.map((trip) => (
           <div
             key={trip.id}
-            className="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between space-y-2"
+            className="bg-white p-8 rounded-lg shadow-md flex flex-col justify-between space-y-2"
           >
             <div className="flex justify-between">
               {/* Trip Start Time */}
@@ -101,6 +110,7 @@ const TripResults = ({ trips, loading }) => {
       </>
       )}
     </div>
+    </>
   );
 };
 
