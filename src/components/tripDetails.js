@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { fetchTripById } from "../services/tripService";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import {
+  
+  FaStarHalfAlt,
+  FaRegStar,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaStar,
+} from "react-icons/fa";
 import MapComponent from "./mapComponent";
 
 const TripDetails = () => {
@@ -25,28 +32,33 @@ const TripDetails = () => {
     return <p className="text-gray-500">Loading trip details...</p>;
   }
 
-  const renderStars = (rating) => {
-    console.log(rating, "rating")
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<FaStar key={i} className="text-yellow-500" />); // Full star for each full rating point
-      } else if (i - rating < 1) {
-        stars.push(<FaStarHalfAlt key={i} className="text-yellow-500" />); // Half star for half points
-      } else {
-        stars.push(<FaRegStar key={i} className="text-yellow-500" />); // Empty star for the rest
-      }
+ const renderStars = (rating) => {
+   const stars = [];
+   for (let i = 1; i <= 5; i++) {
+     stars.push(
+       <FaStar
+         key={i}
+         className={`text-${i <= rating ? "yellow" : "gray"}-400`}
+       />
+     );
+   }
+   return stars;
+ };
+
+  const renderStatusIcon = (status) => {
+    if (status === "COMPLETED") {
+      return <FaCheckCircle className="text-green-500 text-2xl" />;
+    } else {
+      return <FaTimesCircle className="text-red-500 text-2xl" />;
     }
-    return stars;
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-8 space-y-4">
-      <div className="flex justify-between">
-        <div>
+    <div className="bg-white p-6 rounded-lg shadow-md mt-8 space-y-8">
+      <div className="flex justify-between items-start space-x-4">
+        {/* Trip Information */}
+        <div >
           <h2 className="text-2xl font-bold mb-4">Trip Details</h2>
-
-          {/* Trip Information */}
           <p>
             <strong>Pick-up Location:</strong> {trip.pickup_location}
           </p>
@@ -76,14 +88,14 @@ const TripDetails = () => {
           </p>
         </div>
 
-        {/* Driver Information */}
-        <div className="flex space-x-4">
-          <div>
-            <h3 className="text-lg font-bold">Driver Information</h3>
+              
+          {/* Driver Info */}
+          <div >
+            <h3 className="text-lg font-bold mb-2">Driver Information</h3>
             <p>
               <strong>Name:</strong> {trip.driver_name}
             </p>
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-1 mb-2">
               <strong>Rating:</strong>
               <div className="flex items-center">
                 {renderStars(trip.driver_rating)}{" "}
@@ -96,26 +108,25 @@ const TripDetails = () => {
               alt={`${trip.driver_name}'s picture`}
             />
           </div>
-
-          {/* Car Information */}
-          <div>
-            <h3 className="text-lg font-bold">Car Information</h3>
+          {/* Car Info */}
+          <div >
+            <h3 className="text-lg font-bold mb-2">Car Information</h3>
             <p>
               <strong>Car Make & Model:</strong> {trip.car_make}{" "}
               {trip.car_model}
             </p>
             <img
-              className="w-32 h-32 mt-2"
+              className="w-32 h-32 mt-2 rounded-lg object-cover"
               src={trip.car_pic}
               alt={`${trip.car_make} ${trip.car_model}`}
             />
           </div>
         </div>
-      </div>
+      
 
-      {/* Reuse the Map Component */}
+      {/* Map Component */}
       <div>
-        <h3 className="text-lg font-bold">Map of the Trip</h3>
+        <h3 className="text-lg font-bold mb-4">Map of the Trip</h3>
         <MapComponent
           pickupCoords={{ lat: trip.pickup_lat, lng: trip.pickup_lng }}
           dropoffCoords={{ lat: trip.dropoff_lat, lng: trip.dropoff_lng }}
@@ -123,6 +134,7 @@ const TripDetails = () => {
       </div>
     </div>
   );
+
 };
 
 export default TripDetails;
