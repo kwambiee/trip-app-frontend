@@ -18,14 +18,14 @@ const App = () => {
     } catch (error) {
       console.error("Error fetching trips:", error);
     } finally {
-      setLoading(false); // Set loading to false once data is fetched or if an error occurs
+      setLoading(false); 
     }
   };
 
   return (
     <Router>
       <div className="container bg-gray-200 mx-auto mt-6 p-0">
-        <LoadScript googleMapsApiKey="AIzaSyDgcIXChCiptMQJV5FRVdYYO_w6Nc7LSHE">
+        <LoadScript googleMapsApiKey="AIzaSyBmf2ur5AF9cvKabEdPy729uv51Ke9qRHY">
           <Routes>
             <Route path="/" element={<SearchForm onSearch={handleSearch} />} />
             <Route path="/results" element={<TripResults trips={trips} loading={loading} />} />
