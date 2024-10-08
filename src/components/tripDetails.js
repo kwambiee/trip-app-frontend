@@ -98,7 +98,7 @@ const TripDetails = () => {
               </div>
             </div>
             <img
-              className="w-24 h-24 rounded-full mt-2"
+              className="w-32 h-32 rounded-full mt-2"
               src={trip.driver_pic}
               alt={`${trip.driver_name}'s picture`}
             />
@@ -111,7 +111,7 @@ const TripDetails = () => {
               {trip.car_model}
             </p>
             <img
-              className="w-32 h-32 mt-2 rounded-lg object-cover"
+              className="w-56 h-32 mt-2 rounded-lg object-cover"
               src={trip.car_pic}
               alt={`${trip.car_make} ${trip.car_model}`}
             />
