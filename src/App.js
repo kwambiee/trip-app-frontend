@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <Router>
-      <div className="container bg-gray-200 mx-auto mt-6 p-0">
+      <div className="w-full h-full bg-gray-200 mx-auto p-6">
         <LoadScript googleMapsApiKey="AIzaSyBmf2ur5AF9cvKabEdPy729uv51Ke9qRHY">
           <Routes>
             <Route path="/" element={<SearchForm onSearch={handleSearch} />} />

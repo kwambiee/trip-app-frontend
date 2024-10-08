@@ -15,9 +15,10 @@ const SearchForm = ({ onSearch }) => {
   };
 
   return (
+    <div className="h-screen">
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-lg shadow-md space-y-4"
+      className="bg-white p-6 h-1/2 rounded-lg w-1/2 mx-auto shadow-md space-y-4"
     >
       <h2 className="text-2xl font-bold mb-4">Trip Search</h2>
       <div>
@@ -63,6 +64,7 @@ const SearchForm = ({ onSearch }) => {
         Search
       </button>
     </form>
+    </div>
   );
 };
 

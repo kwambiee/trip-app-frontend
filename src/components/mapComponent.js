@@ -1,6 +1,5 @@
 import React from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import {FaLocationPin} from "react-icons/fa";
 
 const MapComponent = ({ pickupCoords, dropoffCoords }) => {
   // Google Maps container style
