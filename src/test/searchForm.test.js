@@ -1,24 +1,91 @@
-// SearchForm.test.js
+
 import { render, screen, fireEvent } from '@testing-library/react';
-import SearchForm from "../components/searchForm"
+import { MemoryRouter } from "react-router-dom";
+import SearchForm from "../components/searchForm";
 
-const mockOnSearch = jest.fn();
 
-describe('SearchForm', () => {
-  it('renders the search form', () => {
-    render(<SearchForm onSearch={mockOnSearch} />);
-    
-    expect(screen.getByLabelText(/Keyword/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Search/i })).toBeInTheDocument();
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => jest.fn(), 
+}));
+
+describe("SearchForm Component", () => {
+  const mockOnSearch = jest.fn(); 
+
+  beforeEach(() => {
+    mockOnSearch.mockClear(); 
   });
 
-  it('calls onSearch when the search button is clicked', () => {
-    render(<SearchForm onSearch={mockOnSearch} />);
+  test("renders form with initial values", () => {
+    render(
+      <MemoryRouter>
+        <SearchForm onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
+
     
-    fireEvent.change(screen.getByLabelText(/Keyword/i), { target: { value: 'Basic' } });
-    fireEvent.click(screen.getByRole('button', { name: /Search/i }));
+    expect(screen.getByLabelText(/Keyword/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/Include Canceled Trips/i)
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/Max Distance \(km\)/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Before Time/i)).toBeInTheDocument();
+
     
-    expect(mockOnSearch).toHaveBeenCalled();
-    expect(mockOnSearch).toHaveBeenCalledWith({ keyword: 'Basic', includeCanceled: false });
+    expect(screen.getByLabelText(/Keyword/i).value).toBe("");
+    expect(screen.getByLabelText(/Include Canceled Trips/i).checked).toBe(
+      false
+    );
+    expect(screen.getByLabelText(/Max Distance \(km\)/i).value).toBe("");
+    expect(screen.getByLabelText(/Before Time/i).value).toBe("");
+  });
+
+  test("allows user to input and submit form data", () => {
+    render(
+      <MemoryRouter>
+        <SearchForm onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
+
+    
+    fireEvent.change(screen.getByLabelText(/Keyword/i), {
+      target: { value: "Beach" },
+    });
+    fireEvent.click(screen.getByLabelText(/Include Canceled Trips/i));
+    fireEvent.change(screen.getByLabelText(/Max Distance \(km\)/i), {
+      target: { value: "50" },
+    });
+    fireEvent.change(screen.getByLabelText(/Before Time/i), {
+      target: { value: "2024-10-15T10:00" },
+    });
+
+    
+    fireEvent.submit(screen.getByRole("button", { name: /Search/i }));
+
+    
+    expect(mockOnSearch).toHaveBeenCalledWith({
+      keyword: "Beach",
+      includeCanceled: true,
+      distance: "50",
+      time: "2024-10-15T10:00",
+    });
+  });
+
+  test("navigates to the results page on form submit", () => {
+    const mockNavigate = jest.fn(); 
+    jest.mock("react-router-dom", () => ({
+      useNavigate: () => mockNavigate,
+    }));
+
+    render(
+      <MemoryRouter>
+        <SearchForm onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
+
+    
+    fireEvent.submit(screen.getByRole("button", { name: /Search/i }));
+
+    
+    expect(mockNavigate).toHaveBeenCalledWith("/results");
   });
 });
