@@ -6,6 +6,8 @@ import TripDetails from "./components/tripDetails";
 import { fetchTrips } from "./services/tripService";
 import { LoadScript } from "@react-google-maps/api";
 
+let googleMapsApiKey = process.env.GOOSLE_MAPS_API_KEY;
+
 const App = () => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,10 +27,13 @@ const App = () => {
   return (
     <Router>
       <div className="w-full h-full bg-gray-200 mx-auto p-6">
-        <LoadScript googleMapsApiKey="AIzaSyBmf2ur5AF9cvKabEdPy729uv51Ke9qRHY">
+        <LoadScript googleMapsApiKey={googleMapsApiKey}>
           <Routes>
             <Route path="/" element={<SearchForm onSearch={handleSearch} />} />
-            <Route path="/results" element={<TripResults trips={trips} loading={loading} />} />
+            <Route
+              path="/results"
+              element={<TripResults trips={trips} loading={loading} />}
+            />
             <Route path="/trips/:id" element={<TripDetails />} />
           </Routes>
         </LoadScript>
